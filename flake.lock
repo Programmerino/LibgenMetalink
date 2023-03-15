@@ -1,0 +1,43 @@
+{
+  "nodes": {
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1648297722,
+        "narHash": "sha256-W+qlPsiZd8F3XkzXOzAoR+mpFqzm3ekQkJNa+PIh1BQ=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "0f8662f1319ad6abf89b3380dd2722369fc51ade",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1672831082,
+        "narHash": "sha256-8cFEeaH0dHbPZuSv/SvCnNF5sbL+5rjqEa32zq7dr5U=",
+        "owner": "IvarWithoutBones",
+        "repo": "nixpkgs",
+        "rev": "bfe6e8baa318800c031e295c86294e2e51ee02f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "IvarWithoutBones",
+        "ref": "dotnetmodule-fetch-impure-deps",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
