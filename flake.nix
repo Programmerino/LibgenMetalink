@@ -21,7 +21,7 @@
         sdk = pkgs.dotnet-sdk_6;
       in rec {
         devShell = pkgs.mkShell {
-          packages = [sdk] ++ defaultPackage.buildInputs ++ defaultPackage.nativeBuildInputs ++ defaultPackage.propogatedBuildInputs;
+          packages = [sdk] ++ defaultPackage.buildInputs ++ defaultPackage.nativeBuildInputs ++ defaultPackage.propagatedBuildInputs;
         };
 
         packages."${name}" = pkgs.buildDotnetModule rec {
