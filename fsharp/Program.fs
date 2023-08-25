@@ -4,10 +4,10 @@ open FSharp.Data
 open System
 open System.Text.RegularExpressions
 open FSharpPlus
+open System.Net.Http
 
 type LibgenRS = HtmlProvider<Sample="./data/index.php", PreferOptionals=true>
 type Metalink = XmlProvider<Schema="./data/metalink4.xsd", InferTypesFromValues=true>
-type GatewayJSON = JsonProvider<"./data/gateways.json", InferTypesFromValues=true>
 type Download = HtmlProvider<Sample="./data/download.html", PreferOptionals=true>
 type Rocks = HtmlProvider<Sample="./data/rocks.html", PreferOptionals=true>
 
@@ -36,7 +36,15 @@ let makeTorrent link =
     singleFileMetaurl.XElement.Value <- link
     singleFileMetaurl
 
-let gateways = GatewayJSON.Load("https://raw.githubusercontent.com/ipfs/public-gateway-checker/master/src/gateways.json")
+let gateways =
+    (new HttpClient()).GetStringAsync(
+        "https://raw.githubusercontent.com/ipfs/public-gateway-checker/master/src/gateways.ts"
+    )
+    |> Async.AwaitTask
+    |> Async.RunSynchronously
+    |> Regex(@"(?<=')[^\'\n]+(?=')", RegexOptions.Compiled).Matches
+    |> Array.ofSeq
+    |> Array.map(fun x -> x.Value)
 
 let ipfsToLinks ipfs =
     gateways
