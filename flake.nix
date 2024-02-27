@@ -1,7 +1,14 @@
 {
   description = "LibgenMetalink";
 
-  nixConfig.bash-prompt = "\[nix-develop\]$ ";
+  nixConfig = {
+    extra-substituters = [
+      "https://programmerino.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "programmerino.cachix.org-1:v8UWI2QVhEnoU71CDRNS/K1CcW3yzrQxJc604UiijjA="
+    ];
+  };
 
   inputs.nixpkgs.url = "github:IvarWithoutBones/nixpkgs/dotnetmodule-fetch-impure-deps";
 
