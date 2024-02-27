@@ -36,15 +36,25 @@ let makeTorrent link =
     singleFileMetaurl.XElement.Value <- link
     singleFileMetaurl
 
+// let gateways =
+//     (new HttpClient()).GetStringAsync(
+//         "https://raw.githubusercontent.com/ipfs/public-gateway-checker/master/src/gateways.ts"
+//     )
+//     |> Async.AwaitTask
+//     |> Async.RunSynchronously
+//     |> Regex(@"(?<=')[^\'\n]+(?=')", RegexOptions.Compiled).Matches
+//     |> Array.ofSeq
+//     |> Array.map(fun x -> x.Value)
+
 let gateways =
     (new HttpClient()).GetStringAsync(
-        "https://raw.githubusercontent.com/ipfs/public-gateway-checker/master/src/gateways.ts"
+        "https://raw.githubusercontent.com/ipfs/public-gateway-checker/main/gateways.json"
     )
     |> Async.AwaitTask
     |> Async.RunSynchronously
-    |> Regex(@"(?<=')[^\'\n]+(?=')", RegexOptions.Compiled).Matches
-    |> Array.ofSeq
-    |> Array.map(fun x -> x.Value)
+    |> JsonValue.Parse
+    |> fun x -> x.AsArray()
+    |> Array.map(fun x -> $"{x.AsString()}/ipfs/:hash")
 
 let ipfsToLinks ipfs =
     gateways
@@ -95,8 +105,8 @@ let getIPFSHash (x: Download) =
 
 let getRocksUrl md5 =
     let url = $"https://libgen.rocks/ads.php?md5={md5}"
-    let path = Rocks.Load(url).Tables.``DB Dumps``.Html.CssSelect("a").Head.AttributeValue "href"
-    $"https://libgen.rocks/{path}"
+    Rocks.Load(url).Tables.``DB Dumps``.Html.CssSelect("a").Head.AttributeValue "href"
+    // $"https://libgen.rocks/{path}"
 
 let getLanguage (x: LibgenRS) = x.Html.CssSelect("body > table > tr").[6].CssSelect("td").[1].DirectInnerText()
 
